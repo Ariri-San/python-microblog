@@ -137,6 +137,17 @@ body {
     height: inherit;
 }
 
+.button_delete {
+    background-color: rgb(230, 0, 255);
+    color: white;
+    border-radius: 2px;
+}
+
+.button_delete:hover {
+    background-color: rgb(179, 0, 199);
+    box-shadow: 2px 3px 5px rgb(104, 104, 104);
+}
+
 /*--------- footer ---------*/
 
 
