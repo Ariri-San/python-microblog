@@ -44,7 +44,7 @@
                         <div>
                             <h2 class="entry_title">{{entry["entry_title"]}}</h2>
                             <time class="entry_date" datetime="{{entry['formatted_date']}}">{{entry["show_date"]}}</time>
-                            <form method="post"><button type="submit" name="id" value="{{entry}}">Delete</button></form>
+                            <form class="form_delete" method="post"><button class="button_delete" type="submit" name="id" value="{{entry}}">Delete</button></form>
                         </div>
                         <p class="entry_content">{{entry["entry_content"]}}</p>
                     </article>
