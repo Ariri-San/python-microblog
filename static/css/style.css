@@ -137,6 +137,11 @@ body {
     height: inherit;
 }
 
+.form_delete {
+    display: inline;
+    margin-left: 20px;
+}
+
 .button_delete {
     background-color: rgb(230, 0, 255);
     color: white;
