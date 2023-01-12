@@ -127,7 +127,7 @@ def create_app():
     @app.route("/logout", methods=["POST", "GET"])
     def logout():
         if "username" in session:
-            usr = session["user"]
+            usr = session["username"]
             flash(f"You have been logged out {usr}!", "info")
         session.pop("username", None)
         session.pop("password", None)
