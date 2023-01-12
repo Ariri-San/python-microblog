@@ -11,13 +11,13 @@ from datetime import timedelta
 from pymongo import MongoClient
 
 
-def replace_none(string):
-    if string == None or string == "":
-        string = "None"
-    return string
-
 
 def create_app():
+
+    def replace_none(string):
+        if string == None or string == "":
+            string = "None"
+        return string
 
     app = Flask(__name__)
     app.secret_key = "gg"  #baraie ramz dadan be session
