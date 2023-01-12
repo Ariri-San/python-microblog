@@ -1,74 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, user-scalable=no,
-        initial-scale=1.0, maximum-scale=1.0">
-        <title>Microblog</title>
-        <link rel="stylesheet" href="/static/css/style.css">
-    </head>
-    <body>
-        <header class="navbar">
-            <div class="navbar_border">
-                <img src="/static/image1.bmp" 
-                alt="logo" id="logo">Microblog
-            </div>
-            <ul class="navbar_navigation">
-                <li class="navbar_navigation_item">
-                    <a href="#" class="navbar_link">Recent</a>
-                </li>
-                <li class="navbar_navigation_item">
-                    <a href="#" class="navbar_link">Calender</a>
-                </li>
-            </ul>
-        </header>
-        <main class="main">
-            <section>
-                <h1>Add new entry</h1>
-                <form class="form" method="post">
-                    <p class="form_input">
-                        <label class="form_label" for="title">Title: </label>
-                        <input type="text" name="title" id="input_name">
-                    </p>
-                    <p class="form_text">
-                        <label class="form_label" for="entry">Entry content: </label>
-                        <textarea class="form_textarea" name="content" id="entry"></textarea>
-                    </p>
-                    <button name="id" value="" class="form_button" type="submit">Add entry</button>
-                </form>
-            </section>
-            <section>
-                <h1>Recent Post</h1>
-                {% for entry in entries: %}
-                    <article class="entry">
-                        <div>
-                            <h2 class="entry_title">{{entry["entry_title"]}}</h2>
-                            <time class="entry_date" datetime="{{entry['formatted_date']}}">{{entry["show_date"]}}</time>
-                            <form class="form_delete" method="post"><button class="button_delete" type="submit" name="id" value="{{entry}}">Delete</button></form>
-                        </div>
-                        <p class="entry_content">{{entry["entry_content"]}}</p>
-                    </article>
+{% extends "base.html" %}
+{% block title %}Microblog{% endblock %}
+
+{% block user %}
+    {% if log == True %}
+        <p>{{username}}</p>
+    {% else %}
+        <a href="/login">{{username}}</a>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <section>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for msg in messages %}
+                    <p>{{msg}}</p>
                 {% endfor %}
-            </section>
-        </main>
-        <footer class="footer">
-            <div class="footer_content">
-                <section class="footer_left">
-                    <a class="footer_item">Made by Shayan</a>
-                    <a class="footer_item">Check other project</a>
-                </section>
-                <section class="footer_right">
-                    <div class="footer_column">
-                        <a class="footer_item">Recent</a>
-                        <a class="footer_item">Calender</a>
-                    </div>
-                    <div class="footer_column">
-                        <a class="footer_item">About</a>
-                        <a class="footer_item">How this was made</a>
-                    </div>
-                </section>
-            </div>
-        </footer>
-    </body>
-</html>
+            {% endif %}
+        {% endwith %}
+        {% if log == True %}
+            <h1>Add new entry</h1>
+            <form class="form" method="post">
+                <p class="form_input">{{username}}: </p>
+                <p class="form_text">
+                    <label class="form_label" for="entry">Entry content: </label>
+                    <textarea class="form_textarea" name="content" id="entry"></textarea>
+                </p>
+                <button name="id" value="" class="form_button" type="submit">Add entry</button>
+            </form>
+        {% else %}
+            <h3>For entry comment login/signin!</h3>
+        {% endif %}
+    </section>
+
+    <section>
+        <h1>Recent Post</h1>
+        {% for entry in entries: %}
+            <article class="entry">
+                <div>
+                    <h2 class="entry_title">{{entry["entry_title"]}}</h2>
+                    <time class="entry_date" datetime="{{entry['formatted_date']}}">{{entry["show_date"]}}</time>
+                    {% if entry["entry_title"] == username %}
+                        <form class="form_delete" method="post">
+                            <button class="button_delete" type="submit" name="id" value="{{entry}}">Delete</button>
+                        </form>
+                    {% endif %}
+                </div>
+                <p class="entry_content">{{entry["entry_content"]}}</p>
+            </article>
+        {% endfor %}
+    </section>
+{% endblock %}
 

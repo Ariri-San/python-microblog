@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no,
+        initial-scale=1.0, maximum-scale=1.0">
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="/static/css/style.css">
+    </head>
+    <body>
+        <header class="navbar">
+            <div class="user_lines">
+                <div class="library" onclick="test(this)">
+                    <div class="lines">
+                        <div class="bar1"></div>
+                        <div class="bar2"></div>
+                        <div class="bar3"></div>
+                    </div>
+                    <div class="menu1">
+                        <a class="key" href="/">Home</a>
+                        <a class="key" href="/signin">Sing in</a>
+                        <a class="key" href="/login">Login</a>
+                        <a class="key" href="/logout">Logout</a>
+                    </div>
+                </div>
+                <script>
+                    function test(e)
+                    {
+                        e.classList.toggle("change");/* ezaf kardan ya hazf kardan tabe */
+                    }
+                </script>
+                <div class="user">
+                    {% block user %}{% endblock %}
+                </div>
+            </div>
+            
+            <div class="navbar_border">
+                <img src="/static/image1.bmp" 
+                alt="logo" id="logo">Microblog
+            </div>
+
+            <ul class="navbar_navigation">
+                <li class="navbar_navigation_item">
+                    <a href="#" class="navbar_link">Recent</a>
+                </li>
+                <li class="navbar_navigation_item">
+                    <a href="#" class="navbar_link">Calender</a>
+                </li>
+            </ul>
+
+        </header>
+        <main class="main">
+            {% block content %}{% endblock %}
+        </main>
+        <footer class="footer">
+
+            <div class="footer_content">
+                <section class="footer_left">
+                    <a class="footer_item">Made by Shayan</a>
+                    <a class="footer_item">Check other project</a>
+                </section>
+                <section class="footer_right">
+                    <div class="footer_column">
+                        <a class="footer_item">Recent</a>
+                        <a class="footer_item">Calender</a>
+                    </div>
+                    <div class="footer_column">
+                        <a class="footer_item">About</a>
+                        <a class="footer_item">How this was made</a>
+                    </div>
+                </section>
+            </div>
+
+        </footer>
+    </body>
+</html>
