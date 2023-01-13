@@ -20,14 +20,11 @@ def create_app():
         return string
 
     app = Flask(__name__)
-    app.secret_key = "gg"  #baraie ramz dadan be session
+    app.secret_key = "gg1234"  #baraie ramz dadan be session
     app.permanent_session_lifetime = timedelta(days=1)
     client = MongoClient("mongodb+srv://kenobi:13815437@microblog-1.tk0zu8o.mongodb.net/test")
     app.db = client.microblog
 
-
-    entries = [i for i in app.db.entries.find()]
-    users = [i for i in app.db.users.find()]
 
     @app.route("/", methods=["GET", "POST"])
     def home():
@@ -42,13 +39,11 @@ def create_app():
                 "formatted_date" : formatted_date,
                 "show_date" : show_date
             }
-            entries.append(entry)
             app.db.entries.insert_many([entry])
         
         elif request.method == "POST" and request.form["id"] != "":
             for i in entries:
                 if str(i) == request.form["id"]:
-                    entries.remove(i)
                     app.db.entries.delete_many(i)
         
         if "username" in session:
@@ -57,7 +52,8 @@ def create_app():
         else:
             username = "Login"
             log = False
-
+        
+        entries = [i for i in app.db.entries.find()]
         return render_template("home.html", entries=entries, username=username, log=log)
     
     @app.route("/signin", methods=["POST", "GET"])
@@ -69,15 +65,10 @@ def create_app():
                 flash("Please enter name", "info")
                 return redirect(url_for("signin"))
             
-            if type(users) == list:
-                for user in users:
-                    if user["username"] == username :
-                        flash("Name is used!, please enter again name", "info")
-                        return redirect(url_for("signin"))
-            else:
-                if users["username"] == username :
-                        flash("Name is used!, please enter again name", "info")
-                        return redirect(url_for("signin"))
+            for user in app.db.users.find():
+                if user["username"] == username :
+                    flash("Name is used!, please enter again name", "info")
+                    return redirect(url_for("signin"))
 
             password = request.form["password"]
             password_2 = request.form["password_2"]
@@ -89,7 +80,6 @@ def create_app():
             app.db.users.insert_many([user])
             session["username"] = username
             session["password"] = password
-            users.append(user)
             flash("Sign in Succesful!", "info")
             return redirect(url_for("home"))
         else:
@@ -104,7 +94,7 @@ def create_app():
         if request.method == "POST":
             username = request.form["username"]
             password = request.form["password"]
-            for user in users:
+            for user in app.db.users.find():
                 if user["username"] == username:
                     if user["password"] == password:
                         session.permanent = True
