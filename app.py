@@ -74,7 +74,7 @@ def create_app():
             password_2 = request.form["password_2"]
             if len(password) < 8 or password != password_2:
                 flash("Please enter password", "info")
-                return redirect(url_for("singin"))
+                return redirect(url_for("signin"))
             
             user = {"username":username, "password":password}
             app.db.users.insert_many([user])
