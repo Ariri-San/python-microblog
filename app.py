@@ -11,7 +11,6 @@ from datetime import timedelta
 from pymongo import MongoClient
 
 
-
 def create_app():
 
     def replace_none(string):
@@ -56,55 +55,54 @@ def create_app():
         entries = [i for i in app.db.entries.find()]
         return render_template("home.html", entries=entries, username=username, log=log)
     
-    @app.route("/signin", methods=["POST", "GET"])
-    def signin():
+    @app.route("/signup", methods=["POST", "GET"])
+    def signup():
         if request.method == "POST":
             session.permanent = True
             username = request.form["username"]
             if username == "":
                 flash("Please enter name", "info")
-                return redirect(url_for("signin"))
+                return redirect(url_for("signup"))
             
-            for user in app.db.users.find():
-                if user["username"] == username :
-                    flash("Name is used!, please enter again name", "info")
-                    return redirect(url_for("signin"))
+            if app.db.users.find_one({"username":username}):
+                flash("The username is already being used!", "info")
+                return redirect(url_for("signup"))
 
             password = request.form["password"]
             password_2 = request.form["password_2"]
             if len(password) < 8 or password != password_2:
                 flash("Please enter password", "info")
-                return redirect(url_for("signin"))
+                return redirect(url_for("signup"))
             
             user = {"username":username, "password":password}
             app.db.users.insert_many([user])
             session["username"] = username
             session["password"] = password
-            flash("Sign in Succesful!", "info")
+            flash("Sign up Succesful!", "info")
             return redirect(url_for("home"))
         else:
             if "username" in session:
                 flash("You Logged In!", "info")
                 return redirect(url_for("home"))
             else:
-                return  render_template("signin.html")
+                return  render_template("signup.html")
 
     @app.route("/login", methods=["POST", "GET"])
     def login():
         if request.method == "POST":
             username = request.form["username"]
             password = request.form["password"]
-            for user in app.db.users.find():
-                if user["username"] == username:
-                    if user["password"] == password:
-                        session.permanent = True
-                        session["username"] = username
-                        session["password"] = password
-                        flash("Login Succesful!", "info")
-                        return redirect(url_for("home"))
-                    else:
-                        flash("Password is not correct!", "info")
-                        return render_template("login.html")
+            if app.db.users.find_one({"username":username}):
+                user = app.db.users.find_one({"username":username})
+                if user["password"] == password:
+                    session.permanent = True
+                    session["username"] = username
+                    session["password"] = password
+                    flash("Login Succesful!", "info")
+                    return redirect(url_for("home"))
+                else:
+                    flash("Password is not correct!", "info")
+                    return render_template("login.html")
             flash("Username not found!", "info")
             return render_template("login.html")
         else:
