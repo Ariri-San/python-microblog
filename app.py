@@ -41,7 +41,7 @@ def create_app():
             app.db.entries.insert_many([entry])
         
         elif request.method == "POST" and request.form["id"] != "":
-            for i in entries:
+            for i in app.db.entries.find():
                 if str(i) == request.form["id"]:
                     app.db.entries.delete_many(i)
         
