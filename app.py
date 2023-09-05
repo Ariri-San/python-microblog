@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Dec 30 13:36:02 2022
-
-@author: Kenobi-Kylo
-"""
 
 import datetime
 from flask import Flask, redirect, url_for, render_template, request, session, flash
