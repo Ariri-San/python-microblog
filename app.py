@@ -15,7 +15,7 @@ def create_app():
     app = Flask(__name__)
     app.secret_key = "gg1234"  #baraie ramz dadan be session
     app.permanent_session_lifetime = timedelta(days=1)
-    client = MongoClient("mongodb+srv://kenobi:13815437@microblog-1.tk0zu8o.mongodb.net/test")
+    client = MongoClient("mongodb+srv://username:password@microblog-1.tk0zu8o.mongodb.net/test")
     app.db = client.microblog
 
 
